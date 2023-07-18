@@ -24,14 +24,23 @@ var index = 0;
 //--------------------------------------show sitting time--------------------------------
 
 onValue(ref(database,'data/time'), (snapshot) => {
-  const time = snapshot.val().hours;
+  const timeH = snapshot.val().hours;
+  const timeM = snapshot.val().minutes;
 
-  if(time > 0){
-    document.getElementById("total-time").innerHTML = 'Sitting time: ' + time + ' hour';
-  }else if(time > 1){
-    document.getElementById("total-time").innerHTML = 'Sitting time: ' + time + ' hours';
-  }else{
+  if((timeH == 0) && (timeM == 0)){
     document.getElementById("total-time").innerHTML = 'Sitting time: N/A';
+  }else if((timeH == 0) && (timeM == 1)){
+    document.getElementById("total-time").innerHTML = 'Sitting time: ' + timeM + ' minute';
+  }else if((timeH == 0) && (timeM > 1)){
+    document.getElementById("total-time").innerHTML = 'Sitting time: ' + timeM + ' minutes';
+  }else if((timeH == 1) && (timeM < 1)){
+    document.getElementById("total-time").innerHTML = 'Sitting time: ' + timeH + ' hour';
+  }else if((timeH == 1) && (timeM == 1)){
+    document.getElementById("total-time").innerHTML = 'Sitting time: ' + timeH + ' hour ' + timeM + ' minute';
+  }else if((timeH > 1) && (timeM > 1)){
+    document.getElementById("total-time").innerHTML = 'Sitting time: ' + timeH + ' hours ' + timeM + ' minutes';
+  }else if((timeH == 1) && (timeM > 1)){
+    document.getElementById("total-time").innerHTML = 'Sitting time: ' + timeH + ' hour ' + timeM + ' minutes';
   }
 
 });
@@ -95,6 +104,7 @@ function update(){
 
 function timer(){
   var currentTime = new Date()
+  var day = currentTime.getDay()
   var hours = currentTime.getHours()
   var minutes = currentTime.getMinutes()
   var sec = currentTime.getSeconds()
